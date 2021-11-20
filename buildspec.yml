@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Entered the install phase...
+    finally:
+      - echo This always runs even if the update or install command fails	  
+  pre_build:
+    commands:
+      - echo Entered the pre_build phase...
+    finally:
+      - echo This always runs even if the update or install command fails	  
+  build:
+    commands:
+      - echo "This is build phase...Zipping my lambda function"
+      - zip -r deployment_package.zip lambda_function.py
+  post_build:
+    commands:
+      - echo "Deploying to the lambda"
+      - aws lambda update-function-code --function-name hello_world --zip-file fileb//deployment_package.zip
+artifacts:
+  type: zip
+  paths:
+    - '*'
